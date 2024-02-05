@@ -3,11 +3,10 @@
 # dependencies
 /node_modules
 /maket_archive
-/src
 /logs
 /.pnp
 .pnp.js
-app.js
+
 
 # testing
 /coverage
