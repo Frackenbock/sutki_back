@@ -18,10 +18,14 @@ class maketController{
 
 		  const record = await poolMaket.query(`SELECT * FROM emails`);// Запрос за aдресами получателей в БД
 		  let adresses = [];
-		  for(let i=0;i<record.rows.length;i++){ 
-			   adresses.push(record.rows[i].email);
-		  }; 
+		  if((req.ip).slice(7)!=="10.18.2.36"){
+		    for(let i=0;i<record.rows.length;i++){ 
+		    	   adresses.push(record.rows[i].email);
+		    }; 
 
+		 }else{
+		    adresses.push("ryzhovas@rushydro.ru");
+		  }	
 		  let passwPost = await poolMaket.query(`SELECT * FROM params WHERE name = $1`, ['Пароль']);// Запрос паролем учётки для постового сервера в БД
 		  passwPost = passwPost.rows[0].value
 		  
@@ -30,61 +34,38 @@ class maketController{
 
 		  let namePost = await poolMaket.query(`SELECT * FROM params WHERE name = $1`, ['Имя']);// Запрос за именем учётки в БД
 		  namePost=namePost.rows[0].value
+		  
+		  let toWrite = 
+			 `//017:${req.body.normalDate.slice(3,5)}${req.body.normalDate.slice(0,2)}:310330:++`
+			+`\n (3):  ${String(req.body.shifr)} :`
+			+`\n (4):  ${String(req.body.windSpeed)} :`
+			+`\n (10): ${String(req.body.upPoolAvearageThisDay)} :`
+			+`\n (14): ${String(req.body.upPoolThisDay)} :`
+			+`\n (16): ${String(req.body.downPoolThisDay)} :`
+			+`\n (18): ${String(req.body.downPoolAvearageLastDay)} :`
+			+`\n (19): ${String(req.body.downPoolMax)} :`
+			+`\n (20): ${String(req.body.downPoolMin)} :`
+			+`\n (30): ${String(req.body.rushAverage)} :`
+			+`\n (40): ${String(req.body.fullInflow)} :`
+			+`\n (41): ${String(req.body.lateralInflow)} :`
+			+`\n (45): ${String(req.body.totalFlowInDownPool)} :`
+			+`\n (46): ${String(req.body.flowInTurbines)} :`
+			+`\n (47): ${String(req.body.spillwayFlow)} :`
+			+`\n (48): ${String(req.body.idlingFlow)} :`
+			+`\n (49): ${String(req.body.filtrationFlow)} :`
+			+`\n (50): ${String(req.body.lockingFlow)} :`
+			+`\n (60): ${String(req.body.maxLoad)} :`
+			+`\n (61): ${String(req.body.minLoad)} :`
+			+`\n (62): ${String(req.body.operatingUnits)} :`
+			+`\n (63): ${String(req.body.unitsUnderRepair)} :`
+			+`\n (64): ${String(req.body.totalPowerInRepair)} :`
+			+`\n (65): ${String(req.body.dailyOutput)} :`
+			+`\n (66): ${String(req.body.monthOutput)} : ==`
  
 			try{
-			fs.writeFile(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`, `//017:${req.body.normalDate.slice(3,5)}${req.body.normalDate.slice(0,2)}:310330:++`, function(error){
+			fs.writeFile(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,toWrite, function(error){
 				if(error) throw error;
 			});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`//017:${req.body.normalDate.slice(3,5)}${req.body.normalDate.slice(0,2)}:310330:++`,function(error){
-				if(error)throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (3):  ${String(req.body.shifr)} :`,function(error){
-				if(error)throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (4):  ${String(req.body.windSpeed)} :`,function(error){
-				if(error)throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (10): ${String(req.body.upPoolAvearageThisDay)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (14): ${String(req.body.upPoolThisDay)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (16): ${String(req.body.downPoolThisDay)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (18): ${String(req.body.downPoolAvearageLastDay)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (19): ${String(req.body.downPoolMax)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (20): ${String(req.body.downPoolMin)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (30): ${String(req.body.rushAverage)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (40): ${String(req.body.fullInflow)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (41): ${String(req.body.lateralInflow)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (45): ${String(req.body.totalFlowInDownPool)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (46): ${String(req.body.flowInTurbines)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (47): ${String(req.body.spillwayFlow)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (48): ${String(req.body.idlingFlow)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (49): ${String(req.body.filtrationFlow)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (50): ${String(req.body.lockingFlow)} :`,function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (60): ${String(req.body.maxLoad)} :` , function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (61): ${String(req.body.minLoad)} :` , function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (62): ${String(req.body.operatingUnits)} :` , function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (63): ${String(req.body.unitsUnderRepair)} :` , function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (64): ${String(req.body.totalPowerInRepair)} :` , function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (65): ${String(req.body.dailyOutput)} :` , function(error){
-				if(error) throw error;});
-			fs.appendFileSync(`./maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt`,`\n (66): ${String(req.body.monthOutput)} : ==` , function(error){
-				if(error) throw error;});
 		
 			let transporter = nodemailer.createTransport({
 				host: ipPost,
@@ -106,7 +87,7 @@ class maketController{
 				text: '',
 				attachments: [
 					{ filename: `@m_017_${req.body.normalDate.slice(0,2)}.txt`,
-					  path: `/home/ПОС\ 1.2/Backend\ Sutki/maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt` },],
+					  path: `/home/sutki/sutki_project/backend_sutki/maket_archive/@m_017_${req.body.normalDate.slice(0,2)}.txt` },],
 			  };
 			  transporter.sendMail(mailOptions, function(error, info){
 				if (error) {

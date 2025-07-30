@@ -5,7 +5,7 @@ const poolMaket = new pg.Pool(connectionTo('maket17'));
 
 class adminMaketController{
 
-   async saveMaketData(req,res){//сохранение данных макета в БД
+   async saveMaketData(req,res){//выгрука данных макета в БД
 		  try{		 
 			const allRecords=[];
 			let amountDays = ((new Date(req.body.dateEndDiapazone).valueOf()-new Date(req.body.dateBeginDiapazone).valueOf())/86400000);

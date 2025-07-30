@@ -129,7 +129,6 @@ class sutkiController{
             ORDER BY P, N`, 
             [req.body.N1,req.body.N2,req.body.P1,req.body.P2]);
             let itogData=[];
-            console.log(dataIntPOst.rows)
             for(let  i=0; i<dataIntPOst.rows.length;i++){
                itogData.push([Number((dataIntPOst.rows[i].p).replace(",",".")),
                Number((dataIntPOst.rows[i].n).replace(",",".")),
