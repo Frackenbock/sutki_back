@@ -18,10 +18,7 @@ class raportController{
             for (let i=1;i<=dataPostgresToday.rows.length-19;i++){
                itogPBRarr.push([dataPostgresToday.rows[i].hour,dataPostgresToday.rows[i].date,dataPostgresToday.rows[i].power,dataPostgresToday.rows[i].file_name])
             }
-
-            console.log(itogPBRarr)
-            // arrPostPBRtoday=arrPostPBRtoday.slice(1,arrPostPBR.length)
-            // res.json(dataPostgresToday,dataPostgresYesterday);
+            res.json(itogPBRarr);
       }catch(err){
          console.log(err)
       };
